@@ -1,2 +1,2 @@
 # PetarkadasServer
-## Pet arkadaş mobil aplikasyonun database mikroservisi
+## Pet arkadaş mobil aplikasyonu database mikroservisi
