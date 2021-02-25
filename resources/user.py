@@ -85,13 +85,13 @@ class UserLogin(Resource):
         if user and safe_str_cmp(user.password, user_data.password):
             confirmation = user.most_recent_confirmation
 
-            if confirmation and confirmation.confirmed:
+            # if confirmation and confirmation.confirmed:
                 # this is what the identity() function used to do
-                access_token = create_access_token(identity=user.id, fresh=True)
-                refresh_token = create_refresh_token(user.id)
-                return ({"access_token": access_token, "refresh_token": refresh_token},
-                        200)
-            return {"message": gettext("user_not_confirmed").format(user.email)}, 400
+            access_token = create_access_token(identity=user.id, fresh=True)
+            refresh_token = create_refresh_token(user.id)
+            return ({"access_token": access_token, "refresh_token": refresh_token},
+                    200)
+            # return {"message": gettext("user_not_confirmed").format(user.email)}, 400
         return {"message": gettext("user_invalid_credentials")}, 401
 
 
