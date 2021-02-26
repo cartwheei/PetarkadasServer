@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:e83xsf09@localhost
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.secret_key = os.environ.get("API_SECRET_KEY")
+app.secret_key = os.environ.get("APP_SECRET_KEY")
 app.config['JWT_SECRET_KEY'] = "alper2"
 api = Api(app)
 

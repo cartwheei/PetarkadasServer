@@ -38,7 +38,7 @@ class UserRegister(Resource):
 
             confirmation.save_to_db()
 
-            user.send_confirmation_email()
+            # user.send_confirmation_email()
             return {"message": gettext("user_registered")}, 201
 
         except MailGunException as e:
@@ -89,7 +89,8 @@ class UserLogin(Resource):
                 # this is what the identity() function used to do
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
-            return ({"access_token": access_token, "refresh_token": refresh_token},
+            print(user.id)
+            return ({"access_token": access_token, "refresh_token": refresh_token, "user_id":user.id},
                     200)
             # return {"message": gettext("user_not_confirmed").format(user.email)}, 400
         return {"message": gettext("user_invalid_credentials")}, 401

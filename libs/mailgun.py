@@ -12,7 +12,7 @@ class MailGunException(Exception):
 
 class Mailgun:
     # .env dosyasında cekiyoruz bunları güvenlik için. githubta paylaşmıyoruz .env.example olanı paylasıyoruz
-    MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN", "sandbox77f3dc67f6a84afca63b56ca07ba417c.mailgun.org")
+    MAILGUN_DOMAIN = os.environ.get("MAILGUN_DOMAIN")
     MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY", "f61b7686fb3e920a834b8fe67b91f440-ea44b6dc-7a3a0d1a")
     FROM_TITLE = "Stores Rest API"
     FROM_EMAIL = f"postmaster@{MAILGUN_DOMAIN}"
@@ -36,7 +36,5 @@ class Mailgun:
 
                         }, )
 
-        # if response != 201:
-        #     raise MailGunException(ERROR_ENDING_EMAIL)
 
         return response
