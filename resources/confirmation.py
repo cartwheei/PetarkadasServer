@@ -7,7 +7,6 @@ import traceback
 from models.user import UserModel
 from models.confirmation import ConfirmationModel
 from schemas.confirmation import ConfirmationSchema
-from libs.mailgun import MailGunException
 from libs.strings import gettext
 
 confirmation_schema = ConfirmationSchema()
@@ -32,14 +31,11 @@ class Confirmation(Resource):
 
         confirmation.confirmed = True
         confirmation.save_to_db()
-
         headers = {"Content-Type": "text/html"}
-
         return make_response(
             render_template("confirmation_page.html", email=confirmation.user.email),
             200,
-            headers,
-        )
+            headers,)
 
 
 class ConfirmationByUser(Resource):

@@ -6,21 +6,18 @@ from flask_cors import CORS
 import os
 
 from ma import ma
-from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout
+from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout, UserLoginToken
 from resources.confirmation import Confirmation, ConfirmationByUser
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-#     "DATABASE_URL", "DATABASE_URI")  # get metodu iki parametre alır ilki yoksa ikinci parametre defaulttur
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:e83xsf09@localhost/petarkadas'
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.secret_key = os.environ.get("API_SECRET_KEY")
+app.secret_key = os.environ.get("APP_SECRET_KEY")
 app.config['JWT_SECRET_KEY'] = "alper2"
 api = Api(app)
 
@@ -45,6 +42,7 @@ api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
 api.add_resource(Confirmation, "/user_confirm/<string:confirmation_id>")
 api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
+api.add_resource(UserLoginToken, "/tokenlogin")
 
 if __name__ == "__main__":
     from db import db
