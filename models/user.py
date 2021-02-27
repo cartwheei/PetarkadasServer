@@ -19,8 +19,6 @@ class UserModel(db.Model):
     def most_recent_confirmation(self) -> "ConfirmationModel":
         return self.confirmation.order_by(db.desc(ConfirmationModel.expire_at)).first()
 
-    # buradan init metodu sildik çünkü yukarıda nullable false yaptıgımız için buraların boş olmayacagını zaten biliyoruz
-
     @classmethod
     def find_by_username(cls, username: str) -> "UserModel":
         return cls.query.filter_by(
@@ -37,7 +35,6 @@ class UserModel(db.Model):
     def find_by_email(cls, email: str) -> "UserModel":
         return cls.query.filter_by(email=email
                                    ).first()
-
 
     def save_to_db(self) -> None:
         db.session.add(self)
