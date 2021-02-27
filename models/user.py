@@ -1,8 +1,4 @@
-from requests import Response
-from flask import request, url_for
-
 from db import db
-from libs.mailgun import Mailgun
 from models.confirmation import ConfirmationModel
 
 
@@ -42,16 +38,6 @@ class UserModel(db.Model):
         return cls.query.filter_by(email=email
                                    ).first()
 
-    def send_confirmation_email(self) -> object:
-        subject = "Registration Confirmation"
-        link = request.url_root[:-1] + url_for(
-            "confirmation", confirmation_id=self.most_recent_confirmation.id)
-        # most_recent id yi kullandıgımızda mail olarak gelen linkte direkt kullanıcı idsidegil
-        # random bir numara yazacak
-
-        text = f"Please click the link to confirm your registration: {link}"
-        # html = f'<html>Please click the link to confirm your registration:<a href="{link}">{link}</a></html>'
-        return Mailgun.send_email([self.email], subject, text)
 
     def save_to_db(self) -> None:
         db.session.add(self)

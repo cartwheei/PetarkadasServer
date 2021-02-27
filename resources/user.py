@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required,
     get_jwt_identity,
     get_raw_jwt,
+    decode_token
 )
 from libs.mailgun import MailGunException
 
@@ -86,11 +87,10 @@ class UserLogin(Resource):
             confirmation = user.most_recent_confirmation
 
             # if confirmation and confirmation.confirmed:
-                # this is what the identity() function used to do
+            # this is what the identity() function used to do
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
-            print(user.id)
-            return ({"access_token": access_token, "refresh_token": refresh_token, "user_id":user.id},
+            return ({"access_token": access_token, "refresh_token": refresh_token, "user_id": user.id},
                     200)
             # return {"message": gettext("user_not_confirmed").format(user.email)}, 400
         return {"message": gettext("user_invalid_credentials")}, 401
@@ -114,3 +114,23 @@ class TokenRefresh(Resource):
         current_user = get_jwt_identity()
         new_token = create_access_token(identity=current_user, fresh=False)
         return {"access_token": new_token}, 200
+
+
+class UserLoginToken(Resource):
+    @classmethod
+    def post(cls):
+        auth_header = request.headers.get('Authorization')
+        auth_token = auth_header.split(" ")[1]
+        if auth_token:
+            user_info = decode_token(auth_token)
+            user = UserModel.find_by_id(user_info['identity'])
+            confirmation = user.most_recent_confirmation
+            if user and confirmation:
+                access_token = create_access_token(identity=user.id, fresh=True)
+                refresh_token = create_refresh_token(user.id)
+                return ({"access_token": access_token, "refresh_token": refresh_token, "user_id": user.id},
+                        200)
+            return {'message': gettext("user_not_found")}
+
+        else:
+            return {'message': gettext("token_not_valid")}
