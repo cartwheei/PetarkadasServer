@@ -7,8 +7,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     create_access_token,
     jwt_refresh_token_required,
-    get_jwt_identity,)
-
+    get_jwt_identity, )
 
 from schemas.user import UserSchema
 from models.user import UserModel
@@ -80,8 +79,7 @@ class UserLogin(Resource):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
 
-            return ({"access_token": access_token, "refresh_token": refresh_token, "user_id": user.id},
-                    200)
+            return ({"access_token": access_token}, 200)
             # return {"message": gettext("user_not_confirmed").format(user.email)}, 400
         return {"message": gettext("user_invalid_credentials")}, 401
 
@@ -118,6 +116,6 @@ class UserLoginToken(Resource):
             if confirmation.expired:
                 return ({"message": gettext("user_expired")}, 401)
             access_token = create_access_token(identity=user.id, fresh=True)
-            refresh_token = create_refresh_token(user.id)
-            return ({"access_token": access_token, "refresh_token": refresh_token, "user_id": user.id}, 200)
+            # refresh_token = create_refresh_token(user.id)
+            return ({"access_token": access_token}, 200)
         return ({'message': gettext("user_not_found")}, 404)
