@@ -8,11 +8,12 @@ import os
 from ma import ma
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout, UserLoginToken
 from resources.confirmation import Confirmation, ConfirmationByUser
-
+from resources.imageManagement import ImageUpload
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:e83xsf09@localhost/petarkadas'
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -40,9 +41,14 @@ api.add_resource(User, "/user/<string:name>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
+
 api.add_resource(Confirmation, "/user_confirm/<string:confirmation_id>")
 api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
+
 api.add_resource(UserLoginToken, "/tokenlogin")
+
+api.add_resource(ImageUpload, "/petImageUpload")
+
 
 if __name__ == "__main__":
     from db import db

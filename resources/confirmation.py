@@ -35,7 +35,7 @@ class Confirmation(Resource):
         return make_response(
             render_template("confirmation_page.html", email=confirmation.user.email),
             200,
-            headers,)
+            headers, )
 
 
 class ConfirmationByUser(Resource):
@@ -50,11 +50,7 @@ class ConfirmationByUser(Resource):
             {"current_time": int(time()),
              "confirmation": [
                  confirmation_schema.dump(each)
-                 for each in user.confirmation.order_by(ConfirmationModel.expire_at)
-             ],
-             },
-            200
-        )
+                 for each in user.confirmation.order_by(ConfirmationModel.expire_at)], }, 200)
 
     @classmethod
     def post(cls, user_id):
@@ -77,8 +73,6 @@ class ConfirmationByUser(Resource):
             user.send_confirmation_email()  # re-send the confirmation email
             return {"message": gettext("confirmation_resend_successful")}, 201
 
-        except MailGunException as e:
-            return {"message": str(e)}, 500
 
         except:
             traceback.print_exc()
