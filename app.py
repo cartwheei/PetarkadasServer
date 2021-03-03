@@ -8,7 +8,7 @@ import os
 from ma import ma
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout, UserLoginToken
 from resources.confirmation import Confirmation, ConfirmationByUser
-from resources.imageManagement import ImageUpload
+from resources.petImage import PetImageUpload
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
@@ -30,9 +30,8 @@ def create_tables():
     db.create_all()
 
 
-# error handleri bircok error için kullanıp daha iyi bir kod yazabiliriz
 @app.errorhandler(ValidationError)
-def handle_marshmallow_validation(err):  # except validation error as err
+def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
 
 
@@ -47,7 +46,7 @@ api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
 
 api.add_resource(UserLoginToken, "/tokenlogin")
 
-api.add_resource(ImageUpload, "/petImageUpload")
+api.add_resource(PetImageUpload, "/petImageUpload")
 
 
 if __name__ == "__main__":

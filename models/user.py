@@ -1,6 +1,6 @@
 from db import db
 from models.confirmation import ConfirmationModel
-from models.imageManagement import ImageModel
+from models.petImage import PetImageModel
 
 
 class UserModel(db.Model):
@@ -16,7 +16,7 @@ class UserModel(db.Model):
         "ConfirmationModel", lazy="dynamic",
         cascade="all, delete-orphan")
 
-    images = db.relationship("ImageModel", lazy="dynamic", cascade="all, delete-orphan")
+    images = db.relationship("PetImageModel", lazy="dynamic", cascade="all, delete-orphan")
 
     @property
     def most_recent_confirmation(self) -> "ConfirmationModel":
