@@ -1,4 +1,5 @@
 import time
+import datetime
 from flask_restful import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from flask_jwt_extended import (
@@ -38,9 +39,13 @@ class PetImageUpload(Resource):
         data = cls.parser.parse_args()
         if data and allowed_file(data["file"].filename):
             user_id = get_jwt_identity()
-            ms_time = time.time() * 1000
-            image = pet_image_saving_directory(data["pet_type"], data['file'], user_id, ms_time)
-            pet_image = pet_image_schema.load({'image_path': image['image_path'], 'user_id': user_id})
+            #burayı daha sonra gözden geçir
+            (dt, micro), utctime = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S.%f').split('.'), datetime.datetime.utcnow
+            micro_time = "%s.%03d" % (dt, int(micro))
+
+            image = pet_image_saving_directory(data["pet_type"], data['file'], user_id, micro_time)
+            pet_image = pet_image_schema.load({'image_path': image['image_path'], 'user_id': user_id,
+                                               })
             pet_image.save_to_db()
             return {"message": gettext("image_upload_successfully")}, 200
         return {"message": gettext("not_allowed_image_extension")}, 400
